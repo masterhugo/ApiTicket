@@ -1,0 +1,28 @@
+version: "3"
+services:
+  api-ticket:
+    build: .
+    ports:
+      - "8081:8081"
+    environment:
+      - PORT=8081
+      - APP_VERSION=develop
+      - DATASOURCE_URL=jdbc:mysql://mysqldb/bootdb?createDatabaseIfNotExist=true&autoReconnect=true&allowPublicKeyRetrieval=true&useSSL=false
+      - DATASOURCE_USERNAME=root
+      - DATASOURCE_PASSWORD=root
+      - DATASOURCE_PLATFORM=mysql
+    networks:
+      - ticket-mysql
+    depends_on:
+      - mysqldb
+
+  mysqldb:
+    image: mysql:8
+    networks:
+      - ticket-mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=bootdb
+
+networks:
+  ticket-mysql:
